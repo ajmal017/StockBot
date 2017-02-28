@@ -15,6 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/tes', function () {
-	return 'hello';
-});
+Route::get('/tes', 'DataImportController@importStockData');

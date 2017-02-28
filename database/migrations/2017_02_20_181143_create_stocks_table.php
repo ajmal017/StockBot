@@ -21,15 +21,18 @@ class CreateStocksTable extends Migration
             $table->integer('high');
             $table->integer('low');
             $table->bigInteger('volume');
-            $table->float('9ema');
-            $table->float('12ema');
-            $table->float('26ema');
-            $table->float('rsi');
-            $table->float('PK');
-            $table->float('PD');
-            $table->float('slowPK');
-            $table->float('slowPD');
-            $table->timestamp('date');
+            $table->float('ema9')->default(0);
+            $table->float('ema12')->default(0);
+            $table->float('ema26')->default(0);
+            $table->float('macd')->default(0);
+            $table->float('macdHistogram')->default(0);
+            $table->float('rsi')->default(0);
+            $table->float('PK')->default(0);
+            $table->float('PD')->default(0);
+            $table->float('slowPK')->default(0);
+            $table->float('slowPD')->default(0);
+            $table->boolean('isCounted')->default(false);
+            $table->date('date');
             $table->timestamps();
         });
     }
