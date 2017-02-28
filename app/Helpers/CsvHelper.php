@@ -15,7 +15,7 @@ class CsvHelper
 		foreach ($rows as &$row) {
 			$row = explode(",", $row);
 			// Parse date
-			$row[0] = Carbon::createFromFormat("d-M-y", $row[0])->toDateTimeString();
+			$row[0] = Carbon::createFromFormat("d-M-y", $row[0])->toDateString();
 		}
 
 		return $rows;

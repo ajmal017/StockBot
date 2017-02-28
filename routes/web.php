@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	phpinfo();
 });
 
 Route::get('/tes', 'DataImportController@importStockData');
