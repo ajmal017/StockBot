@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helpers\CsvHelper;
 use App\Models\Stock;
+use App\Models\WatchedStock;
 use GuzzleHttp\Client;
-use Illuminate\Http\Request;
 use LupeCode\phpTraderInterface\Trader;
 
 class DataImportController extends Controller
@@ -21,22 +21,28 @@ class DataImportController extends Controller
     public function importStockData()
     {
     	$start = microtime(true);
-	    $stockCode = 'WIKA';
+
+    	Stock::truncate();
+
+    	$watchedStocks = WatchedStock::where('isActive', true)->get()->toArray();
 
 		$client = new Client();
-		$response = $client->get($this->getStockDataUrl($stockCode));
-		$csv = $response->getBody()->getContents();
+		foreach ($watchedStocks as $stock) {
+			$promise = $client->requestAsync('GET', $this->getStockDataUrl($stock->stockCode));
+			$promise->then(function ($response) use ($stock) {
+				$csv = $response->getBody()->getContents();
 
-		$data = $this->getLastNArray(array_reverse(CsvHelper::csvToArray($csv)), self::MAX_STOCK_ROWS + self::OFFSET_ROWS);
-		$rows = $this->getLastNArray($this->calculateData($data, $stockCode), self::MAX_STOCK_ROWS);
+				$data = $this->getLastNArray(array_reverse(CsvHelper::csvToArray($csv)), self::MAX_STOCK_ROWS + self::OFFSET_ROWS);
+				$rows = $this->getLastNArray($this->calculateData($data, $stock->stockCode), self::MAX_STOCK_ROWS);
 
-		foreach ($rows as $row)
-		{
-			$check = Stock::where('stockCode', $stockCode)->whereDate('date', '=', $row['date'])->count();
+				foreach ($rows as $row) {
+					$check = Stock::where('stockCode', $stock->stockCode)->whereDate('date', '=', $row['date'])->count();
 
-			if ($check == 0) {
-				Stock::create($row);
-			}
+					if ($check == 0) {
+						Stock::create($row);
+					}
+				}
+			});
 		}
 
 		$end = microtime(true) - $start;

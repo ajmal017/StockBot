@@ -16,6 +16,8 @@ class WatchedStock extends Model
     /**
      * @var array
      */
-    protected $fillable = ['stockCode', 'isActive', 'created_at', 'updated_at'];
+    protected $fillable = ['stockCode', 'isActive'];
+
+	protected $hidden = ['created_at', 'updated_at'];
 
 }

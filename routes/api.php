@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => '/api'], function() {
+	Route::get('/stock/{stockCode}', 'StockApiController@getStockData');
+	Route::get('/stock/{stockCode}/summary', 'StockApiController@getSummaryStockData');
+
+	Route::post('/watchedStock', 'StockApiController@addWatchedStock');
+	Route::post('/watchedStock/{stockCode}/{isActive}', 'StockApiController@setWatchedStockStatus');
 });
