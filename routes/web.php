@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', 'StockController@index');
+Route::get('/', function() {
+	return view('index');
+});
 
 Route::get('/tes', 'DataImportController@importStockData');

@@ -12,7 +12,7 @@ class StockApiController extends Controller
     {
     	$results = Stock::where('stockCode', $stockCode)
 		    ->orderBy('date', 'desc')
-		    ->take(5)
+		    ->take(8)
 		    ->get();
 
     	return $results->toJson();
