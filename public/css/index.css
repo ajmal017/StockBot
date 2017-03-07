@@ -1,8 +1,17 @@
+body {
+	padding-top: 50px;
+}
+
 .panel {
 	font-size: 20px;
+	margin-top: 10px;
 }
 
 .panel .stock-code {
 	margin: 10px 0;
 	font-size: 25px;
+}
+
+.panel .panel-heading {
+	padding-bottom: 20px;
 }
