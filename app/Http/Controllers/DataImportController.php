@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Helpers\CsvHelper;
 use App\Models\Stock;
 use App\Models\WatchedStock;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use LupeCode\phpTraderInterface\Trader;
 
 class DataImportController extends Controller
 {
 	const HISTORICAL_PRICE_URL = 'http://www.google.com/finance/historical?q=IDX%3A{stock}&output=csv';
-	const MAX_STOCK_ROWS = 60;
+	const MAX_STOCK_ROWS = 50;
 	const OFFSET_ROWS = 35;
 
 	/*
@@ -24,12 +25,13 @@ class DataImportController extends Controller
 
     	Stock::truncate();
 
-    	$watchedStocks = WatchedStock::where('isActive', true)->get()->toArray();
+    	$watchedStocks = WatchedStock::where('isActive', true)->get();
 
 		$client = new Client();
+
 		foreach ($watchedStocks as $stock) {
 			$promise = $client->requestAsync('GET', $this->getStockDataUrl($stock->stockCode));
-			$promise->then(function ($response) use ($stock) {
+			$promise->then(function ($response) use ($stock, &$transaction) {
 				$csv = $response->getBody()->getContents();
 
 				$data = $this->getLastNArray(array_reverse(CsvHelper::csvToArray($csv)), self::MAX_STOCK_ROWS + self::OFFSET_ROWS);
@@ -46,6 +48,7 @@ class DataImportController extends Controller
 		}
 
 		$end = microtime(true) - $start;
+
 		return 'Done in ' . $end . ' sec';
     }
 

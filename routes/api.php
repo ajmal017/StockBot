@@ -13,10 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::group(['prefix' => '/api'], function() {
-	Route::get('/stock/{stockCode}', 'StockApiController@getStockData');
-	Route::get('/stock/{stockCode}/summary', 'StockApiController@getSummaryStockData');
+Route::get('/stock/{stockCode}', 'StockApiController@getStockData');
+Route::get('/stock/{stockCode}/summary', 'StockApiController@getSummaryStockData');
+Route::get('/stock/{stockCode}/chart', 'StockApiController@getChartStockData');
 
-	Route::post('/watchedStock', 'StockApiController@addWatchedStock');
-	Route::post('/watchedStock/{stockCode}/{isActive}', 'StockApiController@setWatchedStockStatus');
-});
+Route::get('/watchedStock', 'StockApiController@getWatchedStocks');
+Route::post('/watchedStock', 'StockApiController@addWatchedStock');
+Route::post('/watchedStock/{stockCode}/{isActive}', 'StockApiController@setWatchedStockStatus');

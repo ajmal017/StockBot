@@ -18,12 +18,34 @@ class StockApiController extends Controller
     	return $results->toJson();
     }
 
+    public function getChartStockData($stockCode)
+    {
+	    $results = Stock::select('date', 'low', 'open', 'close', 'high')
+	        ->where('stockCode', $stockCode)
+		    ->get()
+		    ->toArray();
+
+	    foreach ($results as &$result) {
+	    	$result = array_values($result);
+	    }
+
+	    return response()->json($results);
+    }
+
     public function getStockData($stockCode)
     {
 	    $results = Stock::where('stockCode', $stockCode)
 		    ->get();
 
 	    return $results->toJson();
+    }
+
+    public function getWatchedStocks()
+    {
+    	$results = WatchedStock::where('isActive', true)
+		    ->get();
+
+    	return $results->toJson();
     }
 
     public function addWatchedStock(Request $request)

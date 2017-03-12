@@ -15,42 +15,49 @@
 			</div>
 		</nav>
 		<div class="container">
-			<div class="panel panel-info" role="button" data-toggle="collapse" href="#stockDetail" aria-expanded="false" aria-controls="stockDetails">
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-sm-3">
-							<div class="stock-code">BUDI</div>
+			<div class="panel panel-default collapse" id="stockChart">
+				<div id="chart"></div>
+			</div>
+			<div id="summary">
+				<div class="panel panel-info">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-sm-3">
+								<div class="stock-code">BUDI</div>
+							</div>
+							<div class="col-sm-3">
+								<div>RSI</div>
+								<div class="label label-success">OVERSOLD!</div>
+							</div>
+							<div class="col-sm-3">
+								<div>MACD</div>
+								<div class="label label-danger">REBOUND DOWN!</div>
+							</div>
+							<div class="col-sm-3">
+								<div>STOCHASTIC</div>
+								<div class="label label-warning">STABLE</div>
+							</div>
 						</div>
-						<div class="col-sm-3">
-							<div>RSI</div>
-							<div class="label label-success">OVERSOLD!</div>
-						</div>
-						<div class="col-sm-3">
-							<div>MACD</div>
-							<div class="label label-danger">REBOUND DOWN!</div>
-						</div>
-						<div class="col-sm-3">
-							<div>STOCHASTIC</div>
-							<div class="label label-warning">STABLE</div>
-						</div>
-					</div>
-					<div class="row collapse" id="stockDetail">
-						<!-- chart -->
 					</div>
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 		<script src="{{ asset('plugins/jquery/jquery.slim.js') }}"></script>
 		<script src="{{ asset('plugins/bootstrap/js/bootstrap.js') }}"></script>
 		<script src="{{ asset('plugins/vue/vue.js') }}"></script>
-		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-		<script type="text/javascript">
-			google.charts.load('current', {packages: ['corechart']});
-			google.charts.setOnLoadCallback(drawChart);
+		<script src="{{ asset('plugins/vue-resource/vue-resource.js') }}"></script>
 
-			function drawChart() {
+		<script src="{{ asset('js/googleChart.js') }}"></script>
+		<script src="{{ asset('js/stockChart.js') }}"></script>
+		<script src="{{ asset('js/stockList.js') }}"></script>
 
-			}
+		<script>
+			let gChart = new GoogleChart(google);
+
+			let stockChart = new StockChart('#chart', gChart);
+			stockChart.app.getStockData('WIKA');
+
 		</script>
 	</body>
 </html>

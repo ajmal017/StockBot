@@ -31,5 +31,4 @@ class Stock extends Model
     protected $fillable = ['stockCode', 'open', 'close', 'high', 'low', 'volume', 'macd', 'macdSignal', 'macdHistogram', 'rsi', 'stochK', 'stochD', 'date'];
 
     protected $hidden = ['created_at', 'updated_at'];
-
 }
