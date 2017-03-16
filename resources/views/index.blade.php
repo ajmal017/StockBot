@@ -15,7 +15,7 @@
 			</div>
 		</nav>
 		<div class="container">
-			<div class="panel panel-default collapse" id="stockChart">
+			<div class="panel panel-default" id="stockChart">
 				<div id="chart"></div>
 			</div>
 			<div id="summary">
@@ -24,6 +24,7 @@
 						<div class="row">
 							<div class="col-sm-3">
 								<div class="stock-code">BUDI</div>
+								<div class="stock-price">98</div>
 							</div>
 							<div class="col-sm-3">
 								<div>RSI</div>
@@ -57,7 +58,6 @@
 
 			let stockChart = new StockChart('#chart', gChart);
 			stockChart.app.getStockData('WIKA');
-
 		</script>
 	</body>
 </html>

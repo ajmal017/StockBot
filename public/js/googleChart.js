@@ -6,7 +6,7 @@ class GoogleChart {
 	drawCandlestickChart(param, title, element) {
 		this.google.charts.load('current', {'packages':['corechart']});
 		this.google.charts.setOnLoadCallback(() => {
-			let data = this.parseData(param);
+			let data = this.parseCandlestickData(param);
 			let options = {
 				title: title,
 				legend: 'none',

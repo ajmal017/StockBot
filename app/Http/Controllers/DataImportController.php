@@ -27,11 +27,10 @@ class DataImportController extends Controller
 
     	$watchedStocks = WatchedStock::where('isActive', true)->get();
 
-		$client = new Client();
+			$client = new Client();
 
-		foreach ($watchedStocks as $stock) {
-			$promise = $client->requestAsync('GET', $this->getStockDataUrl($stock->stockCode));
-			$promise->then(function ($response) use ($stock, &$transaction) {
+			foreach ($watchedStocks as $stock) {
+				$response = $client->request('GET', $this->getStockDataUrl($stock->stockCode));
 				$csv = $response->getBody()->getContents();
 
 				$data = $this->getLastNArray(array_reverse(CsvHelper::csvToArray($csv)), self::MAX_STOCK_ROWS + self::OFFSET_ROWS);
@@ -44,22 +43,21 @@ class DataImportController extends Controller
 						Stock::create($row);
 					}
 				}
-			});
-		}
-
-		$end = microtime(true) - $start;
-
-		return 'Done in ' . $end . ' sec';
+			}
+	
+			$end = microtime(true) - $start;
+	
+			return 'Done in ' . $end . ' sec';
     }
 
     public function calculateData(array $rows, $stockCode)
     {
     	$details = $this->getDetails($rows);
-		$macds = Trader::macd($details['close'], 12, 26, 9);
-		$rsis = Trader::relativeStrengthIndex($details['close'], 14);
-		$stochastics = Trader::stoch($details['high'], $details['low'], $details['close'], 14, 3);
-
-		$result = [];
+			$macds = Trader::macd($details['close'], 12, 26, 9);
+			$rsis = Trader::relativeStrengthIndex($details['close'], 14);
+			$stochastics = Trader::stoch($details['high'], $details['low'], $details['close'], 14, 3);
+	
+			$result = [];
 
     	for ($i = 0; $i < count($rows); $i++)
 	    {
@@ -73,7 +71,7 @@ class DataImportController extends Controller
 			    'low' => $row[3],
 			    'close' => $row[4],
 			    'volume' => $row[5],
-				'macd' => $macds[0][$i] ?? 0,
+					'macd' => $macds[0][$i] ?? 0,
 			    'macdSignal' => $macds[1][$i] ?? 0,
 			    'macdHistogram' => $macds[2][$i] ?? 0,
 			    'rsi' => $rsis[$i] ?? 0,
