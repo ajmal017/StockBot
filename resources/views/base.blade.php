@@ -13,6 +13,7 @@
         <div class="navbar-header">
             <a class="navbar-brand">StockBot</a>
         </div>
+        @if ($page == 'home')
         <form action="" method="POST" class="navbar-form navbar-right">
             <div class="input-group">
                 <input type="text" name="stockCode" class="form-control" placeholder="Stock Code">
@@ -24,6 +25,7 @@
                 <input type="text" id="search-stock" class="form-control" placeholder="Search Stock">
             </div>
         </form>
+        @endif
     </div>
 </nav>
 <div class="container">

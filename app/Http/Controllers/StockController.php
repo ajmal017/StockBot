@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\StockHelpers;
-use App\Models\Stock;
-use App\Models\WatchedStock;
 use Illuminate\Http\Request;
 
 class StockController extends Controller
@@ -14,7 +12,15 @@ class StockController extends Controller
         $data = [];
         $data['summary'] = $this->getSummaries();
 
-        return view('index', ['data' => $data]);
+        return view('index', ['data' => $data, 'page' => 'home']);
+    }
+
+    public function show($stockCode)
+    {
+        $data = [];
+        $data['details'] = StockHelpers::getStockDetails($stockCode);
+
+        return view('stock', ['data' => $data, 'page' => 'stock']);
     }
 
     private function getSummaries()
@@ -23,7 +29,6 @@ class StockController extends Controller
         $watchedStocks = StockHelpers::getWatchedStocks(true);
 
         foreach ($watchedStocks as $watchedStock) {
-            // Summary
             $summary = StockHelpers::getStockSummary($watchedStock['stockCode']);
             $results[$watchedStock['stockCode']] = $summary;
         }

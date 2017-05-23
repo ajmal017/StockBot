@@ -7,7 +7,7 @@ class MacdChart extends GoogleChart {
                 legend: 'none',
                 seriesType: 'line',
                 series: { 2: { type: 'bars' } },
-                lineWidth: 1,
+                colors: ['blue', 'red', 'grey'],
                 bar: {
                     groupWidth: '90%'
                 },
@@ -18,7 +18,7 @@ class MacdChart extends GoogleChart {
                 hAxis: {
                     textPosition: 'none'
                 },
-                height: 150
+                height: this.height
             };
             let data = this.google.visualization.arrayToDataTable(param);
             let chart = new this.google.visualization.ComboChart(element);

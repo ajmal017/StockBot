@@ -6,7 +6,6 @@ class RsiChart extends GoogleChart {
                 title: title,
                 curveType: 'none',
                 legend: 'none',
-                lineWidth: 1,
                 vAxis: {
                     maxValue: 100,
                     minValue: 0
@@ -14,7 +13,7 @@ class RsiChart extends GoogleChart {
                 hAxis: {
                     textPosition: 'none'
                 },
-                height: 150
+                height: this.height
             };
             let data = this.google.visualization.arrayToDataTable(param);
             let chart = new this.google.visualization.LineChart(element);

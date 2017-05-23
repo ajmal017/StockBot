@@ -11,6 +11,7 @@
 |
 */
 
-Route::get('/', 'StockController@index');
+Route::get('/', ['as' => 'home', 'uses' => 'StockController@index']);
+Route::get('/stock/{stockCode}', ['as' => 'stock', 'uses' => 'StockController@show']);
 
-Route::get('/tes', 'DataImportController@importStockData');
+Route::get('/import', 'DataImportController@importStockData');
