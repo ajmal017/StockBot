@@ -2,12 +2,37 @@ body {
 	padding-top: 50px;
 }
 
-.panel {
-	font-size: 20px;
+#summary .panel {
+	font-size: 18px;
 	margin-top: 10px;
-	padding-bottom: 10px;
+	height: 225px;
 }
 
-.panel .stock-code {
-	font-size: 20px;
+#summary .panel .stock {
+	font-size: 22px;
+}
+
+#summary .panel .stock-price {
+	font-size: 30px;
+}
+
+#summary .panel .chart {
+	margin-top: 10px;
+	max-width: 100%;
+	min-height: 150px;
+	border: solid 2px #cccccc;
+	transition: all 1s;
+}
+
+#summary .panel .chart.success {
+	border-color: #28b62c;
+}
+
+#summary .panel .chart.danger {
+	border-color: #ff4136;
+}
+
+/* google chart */
+svg g g g g rect {
+	stroke-width:0px;
 }

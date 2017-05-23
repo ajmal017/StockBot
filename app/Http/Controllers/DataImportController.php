@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\CsvHelper;
+use App\Helpers\CsvHelpers;
 use App\Models\Stock;
 use App\Models\WatchedStock;
 use Carbon\Carbon;
@@ -33,7 +33,7 @@ class DataImportController extends Controller
 				$response = $client->request('GET', $this->getStockDataUrl($stock->stockCode));
 				$csv = $response->getBody()->getContents();
 
-				$data = $this->getLastNArray(array_reverse(CsvHelper::csvToArray($csv)), self::MAX_STOCK_ROWS + self::OFFSET_ROWS);
+				$data = $this->getLastNArray(array_reverse(CsvHelpers::csvToArray($csv)), self::MAX_STOCK_ROWS + self::OFFSET_ROWS);
 				$rows = $this->getLastNArray($this->calculateData($data, $stock->stockCode), self::MAX_STOCK_ROWS);
 
 				foreach ($rows as $row) {

@@ -15,7 +15,7 @@ class CreateWatchedStocksTable extends Migration
     {
         Schema::create('watched_stocks', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('stockCode', 16);
+            $table->char('stockCode', 8)->unique();
             $table->boolean('isActive')->default(true);
             $table->timestamps();
         });

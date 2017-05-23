@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 use Carbon\Carbon;
 
-class CsvHelper
+class CsvHelpers
 {
 	public static function csvToArray($csv)
 	{
