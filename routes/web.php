@@ -13,5 +13,6 @@
 
 Route::get('/', ['as' => 'home', 'uses' => 'StockController@index']);
 Route::get('/stock/{stockCode}', ['as' => 'stock', 'uses' => 'StockController@show']);
+Route::post('/stock', ['as' => 'post-stock', 'uses' => 'StockController@store']);
 
-Route::get('/import', 'DataImportController@importStockData');
+Route::get('/import', 'DataImportController@importAllStockData');

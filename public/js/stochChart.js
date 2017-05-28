@@ -1,19 +1,14 @@
 class StochChart extends GoogleChart{
-    draw(element, param, title) {
+    draw(element, param, title, options) {
         this.google.charts.load('current', {'packages':['corechart']});
         this.google.charts.setOnLoadCallback(() => {
-            let options = {
+            options = {
                 title: title,
-                curveType: 'none',
-                legend: 'none',
-                vAxis: {
-                    maxValue: 100,
-                    minValue: 0
-                },
-                hAxis: {
-                    textPosition: 'none'
-                },
-                height: this.height
+	            height: this.height,
+                curveType: options.curveType,
+                legend: options.legend,
+	            vAxis: options.vAxis,
+	            hAxis: options.hAxis
             };
             let data = this.google.visualization.arrayToDataTable(param);
             let chart = new this.google.visualization.LineChart(element);

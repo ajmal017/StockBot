@@ -1,22 +1,15 @@
 class CandlestickChart extends GoogleChart {
-	draw(param, title, element) {
+	draw(element, param, title, options) {
 		this.google.charts.load('current', {'packages':['corechart']});
 		this.google.charts.setOnLoadCallback(() => {
-			let data = this.parseCandlestickData(param);
-			let options = {
+			let data = this.parse(param);
+			options = {
 				title: title,
-				legend: 'none',
-				candlestick: {
-					fallingColor: {
-						strokeWidth: 0,
-						fill: '#ff4136',
-					},
-					risingColor: {
-						strokeWidth: 0,
-						fill: '#28b62c',
-					}
-				},
-				height: 300
+				height: this.height,
+				legend: options.legend,
+				candlestick: options.candlestick,
+				bar: options.bar,
+				series: options.series
 			};
 			let chart = new this.google.visualization.CandlestickChart(element);
 			chart.draw(data, options);
@@ -37,7 +30,7 @@ class CandlestickChart extends GoogleChart {
 			let curr = param[i];
 
 			curr[0] = new Date(curr[0]);
-			curr.push(curr[0].toDateString() + "\nClose: " + curr[3]);
+			curr.push(curr[0].toDateString() + "\nLow: " + curr[1] + " - High: " + curr[4] + "\nOpen: " + curr[2] + " - Close: " + curr[3]);
 		}
 
 		results.addRows(param);

@@ -1,24 +1,17 @@
 class MacdChart extends GoogleChart {
-    draw(element, param, title) {
+    draw(element, param, title, options) {
         this.google.charts.load('current', {'packages':['corechart']});
         this.google.charts.setOnLoadCallback(() => {
-            let options = {
+            options = {
                 title: title,
-                legend: 'none',
-                seriesType: 'line',
-                series: { 2: { type: 'bars' } },
-                colors: ['blue', 'red', 'grey'],
-                bar: {
-                    groupWidth: '90%'
-                },
-                vAxis: {
-                    maxValue: 0.25,
-                    minValue: -0.25
-                },
-                hAxis: {
-                    textPosition: 'none'
-                },
-                height: this.height
+	            height: this.height,
+                legend: options.legend,
+                seriesType: options.seriesType,
+                series: options.series,
+                colors: options.colors,
+                bar: options.bar,
+                vAxis: options.vAxis,
+                hAxis: options.hAxis
             };
             let data = this.google.visualization.arrayToDataTable(param);
             let chart = new this.google.visualization.ComboChart(element);

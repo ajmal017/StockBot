@@ -11,13 +11,14 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand">StockBot</a>
+            <a class="navbar-brand" href="{{ route('home') }}">StockBot</a>
         </div>
         @if ($page == 'home')
-        <form action="" method="POST" class="navbar-form navbar-right">
+        <form action="{{ route('post-stock') }}" method="POST" class="navbar-form navbar-right">
+            {{ csrf_field() }}
             <div class="input-group">
                 <input type="text" name="stockCode" class="form-control" placeholder="Stock Code">
-                <span class="input-group-btn"><button class="btn btn-primary" type="button">Add Stock</button></span>
+                <span class="input-group-btn"><button class="btn btn-primary" type="submit">Add Stock</button></span>
             </div>
         </form>
         <form class="navbar-form navbar-right">
@@ -34,7 +35,7 @@
 
 <script src="{{ asset('plugins/jquery/jquery.slim.min.js') }}"></script>
 <script src="{{ asset('plugins/bootstrap/js/bootstrap.js') }}"></script>
-<script src="{{ asset('js/loader.js') }}"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="{{ asset('js/googleChart.js') }}"></script>
 
 @yield('scripts')

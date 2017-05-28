@@ -17,6 +17,7 @@ class CreateWatchedStocksTable extends Migration
             $table->increments('id');
             $table->char('stockCode', 8)->unique();
             $table->boolean('isActive')->default(true);
+            $table->timestamp('importedAt');
             $table->timestamps();
         });
     }
