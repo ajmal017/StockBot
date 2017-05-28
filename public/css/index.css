@@ -5,7 +5,6 @@ body {
 .panel {
 	font-size: 18px;
 	margin-top: 10px;
-    height: 295px;
     border-width: 1px 1px 4px 1px;
 }
 
@@ -20,7 +19,10 @@ body {
 
 .panel .stock {
 	font-size: 22px;
-    margin-bottom: 10px;
+}
+
+.panel .stock .btn {
+	font-size: 10px;
 }
 
 .panel .chart {
@@ -54,4 +56,19 @@ body {
 /* google chart */
 svg g g g g rect {
 	stroke-width:0px;
+}
+
+/* override bootstrap */
+.collapse {
+	display: block;
+	height: 0 !important;
+	overflow: hidden;
+}
+
+.collapse.in {
+	height: auto !important;
+}
+
+.collapse.in.chart-detail, .collapsing.chart-detail {
+	padding-top: 20px;
 }

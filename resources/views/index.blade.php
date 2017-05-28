@@ -1,22 +1,40 @@
 @extends('base')
 
+@section('styles')
+	<link rel="stylesheet" href="{{ asset('css/progress-indicator.css') }}"/>
+@append
+
 @section('content')
 	<div id="summary">
 		@foreach ($data['summary'] as $key => $item)
 			<div class="panel panel-info">
 				<div class="panel-body text-center">
-					<div class="row">
-						<div class="col-sm-12 stock">
-							<div class="stock-code">
-								<a href="{{ route('stock', ['stockCode' => $item['stockCode']]) }}">{{ $item['stockCode'] }}</a>
-							</div>
-							<div>
-								<span class="stock-price"><strong>{{ $item['price'] }}</strong></span>
-								<span class="stock-change {{ $item['change'] >= 0 ? 'text-success' : 'text-danger' }}">{{ $item['change'] }} ({{ $item['percent'] }}%)</span>
-							</div>
+					<div class="row stock">
+						<div class="col-sm-1">
+							<a href="{{ route('stock', ['stockCode' => $item['stockCode']]) }}">{{ $item['stockCode'] }}</a>
+						</div>
+						<div class="col-sm-2 text-right">
+							<strong>{{ $item['price'] }}</strong>
+						</div>
+						<div class="col-sm-2 text-left">
+							<span class="{{ $item['change'] >= 0 ? 'text-success' : 'text-danger' }}">{{ $item['change'] }} ({{ $item['percent'] }}%)</span>
+						</div>
+						<div class="col-sm-6">
+							<ul class="progress-indicator">
+								<li class="sell {{ ($item['overall'] <= -3) ? 'danger' : '' }}"><span class="bubble"></span>SELL NOW!</li>
+								<li class="sell {{ ($item['overall'] <= -2) ? 'danger' : '' }}"><span class="bubble"></span>SELL</li>
+								<li class="hold {{ ($item['overall'] < 0) ? 'danger' : (($item['overall'] > 0) ? 'completed' : '') }}"><span class="bubble"></span>HOLD</li>
+								<li class="buy {{ ($item['overall'] >= 2) ? 'completed' : '' }}"><span class="bubble"></span>BUY</li>
+								<li class="buy {{ ($item['overall'] >= 3) ? 'completed' : '' }}"><span class="bubble"></span>BUY NOW!</li>
+							</ul>
+						</div>
+						<div class="col-sm-1">
+							<button class="btn btn-sm btn-primary" type="button" data-toggle="collapse" data-target="#collapse-{{ $key }}" aria-expanded="false" aria-controls="collapseExample">
+								<i class="glyphicon glyphicon-plus"></i>
+							</button>
 						</div>
 					</div>
-					<div class="row">
+					<div class="row chart-detail collapse" id="collapse-{{ $key }}">
 						<div class="col-sm-4">
 							<div>
 								RSI <span class="label {{ $item['insight']['rsi']['label'] }}">{{ $item['insight']['rsi']['text'] }}</span>

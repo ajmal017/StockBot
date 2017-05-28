@@ -21,6 +21,7 @@ class StockHelpers
     public static function getWatchedStocks($isActive)
     {
         return WatchedStock::where('isActive', $isActive)
+	        ->orderBy('stockCode', 'asc')
             ->get()
             ->toArray();
     }
@@ -128,33 +129,35 @@ class StockHelpers
 	        'stoch' => self::getStochInsight($stoch, $stochHistogram)
         ];
 
+        $results['overall'] = $results['insight']['rsi']['score'] + $results['insight']['macd']['score'] + $results['insight']['stoch']['score'];
+
         return $results;
     }
 
     private static function getRsiInsight($rsi) {
         if ($rsi > 70) {
-            return ['label' => 'label-danger', 'chart' => 'danger', 'text' => 'SELL'];
+            return ['label' => 'label-danger', 'chart' => 'danger', 'text' => 'SELL', 'score' => -2];
         } else if ($rsi < 30) {
-            return ['label' => 'label-success', 'chart' => 'success', 'text' => 'BUY'];
+            return ['label' => 'label-success', 'chart' => 'success', 'text' => 'BUY', 'score' => 2];
         }
-        return ['label' => 'label-default', 'chart' => '', 'text' => 'HOLD'];
+        return ['label' => 'label-default', 'chart' => '', 'text' => 'HOLD', 'score' => 0];
     }
 
     private static function getMacdInsight($macd) {
         if ($macd[0] < 0 && $macd[1] >= 0) {
-            return ['label' => 'label-danger', 'chart' => 'danger', 'text' => 'SELL'];
+            return ['label' => 'label-danger', 'chart' => 'danger', 'text' => 'SELL', 'score' => -1];
         } else if ($macd[0] > 0 && $macd[1] <= 0) {
-            return ['label' => 'label-success', 'chart' => 'success', 'text' => 'BUY'];
+            return ['label' => 'label-success', 'chart' => 'success', 'text' => 'BUY', 'score' => 1];
         }
-        return ['label' => 'label-default', 'chart' => '', 'text' => 'HOLD'];
+	    return ['label' => 'label-default', 'chart' => '', 'text' => 'HOLD', 'score' => 0];
     }
 
     private static function getStochInsight($stoch, $stochHistogram) {
         if ($stochHistogram[0] < 0 && $stochHistogram[1] >= 0 && $stoch > 70) {
-            return ['label' => 'label-danger', 'chart' => 'danger', 'text' => 'SELL'];
+	        return ['label' => 'label-danger', 'chart' => 'danger', 'text' => 'SELL', 'score' => -1];
         } else if ($stochHistogram[0] > 0 && $stochHistogram[1] <= 0 && $stoch < 30) {
-            return ['label' => 'label-success', 'chart' => 'success', 'text' => 'BUY'];
+	        return ['label' => 'label-success', 'chart' => 'success', 'text' => 'BUY', 'score' => 1];
         }
-        return ['label' => 'label-default', 'chart' => '', 'text' => 'HOLD'];
+	    return ['label' => 'label-default', 'chart' => '', 'text' => 'HOLD', 'score' => 0];
     }
 }
