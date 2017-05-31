@@ -5,6 +5,7 @@ body {
 .panel {
 	font-size: 18px;
 	margin-top: 10px;
+	margin-bottom: 0;
     border-width: 1px 1px 4px 1px;
 }
 
@@ -71,4 +72,8 @@ svg g g g g rect {
 
 .collapse.in.chart-detail, .collapsing.chart-detail {
 	padding-top: 20px;
+}
+
+.panel-body {
+	padding: 5px;
 }

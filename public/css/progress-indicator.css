@@ -24,7 +24,7 @@
 	flex: 1
 }
 .progress-indicator {
-	margin: 0 0 1em;
+	margin: 5px 0 0;
 	padding: 0;
 	font-size: 80%;
 	text-transform: uppercase

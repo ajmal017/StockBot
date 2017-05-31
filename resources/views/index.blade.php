@@ -19,14 +19,20 @@
 						<div class="col-sm-2 text-left">
 							<span class="{{ $item['change'] >= 0 ? 'text-success' : 'text-danger' }}">{{ $item['change'] }} ({{ $item['percent'] }}%)</span>
 						</div>
-						<div class="col-sm-6">
+						<div class="col-sm-1 text-danger">
+							<strong>SELL</strong>
+						</div>
+						<div class="col-sm-4">
 							<ul class="progress-indicator">
-								<li class="sell {{ ($item['overall'] <= -3) ? 'danger' : '' }}"><span class="bubble"></span>SELL NOW!</li>
-								<li class="sell {{ ($item['overall'] <= -2) ? 'danger' : '' }}"><span class="bubble"></span>SELL</li>
-								<li class="hold {{ ($item['overall'] < 0) ? 'danger' : (($item['overall'] > 0) ? 'completed' : '') }}"><span class="bubble"></span>HOLD</li>
-								<li class="buy {{ ($item['overall'] >= 2) ? 'completed' : '' }}"><span class="bubble"></span>BUY</li>
-								<li class="buy {{ ($item['overall'] >= 3) ? 'completed' : '' }}"><span class="bubble"></span>BUY NOW!</li>
+								<li class="sell {{ ($item['overall'] <= -3) ? 'danger' : '' }}"><span class="bubble"></span></li>
+								<li class="sell {{ ($item['overall'] <= -2) ? 'danger' : '' }}"><span class="bubble"></span></li>
+								<li class="hold {{ ($item['overall'] < 0) ? 'danger' : (($item['overall'] > 0) ? 'completed' : '') }}"><span class="bubble"></span></li>
+								<li class="buy {{ ($item['overall'] >= 2) ? 'completed' : '' }}"><span class="bubble"></span></li>
+								<li class="buy {{ ($item['overall'] >= 3) ? 'completed' : '' }}"><span class="bubble"></span></li>
 							</ul>
+						</div>
+						<div class="col-sm-1 text-success">
+							<strong>BUY</strong>
 						</div>
 						<div class="col-sm-1">
 							<button class="btn btn-sm btn-primary" type="button" data-toggle="collapse" data-target="#collapse-{{ $key }}" aria-expanded="false" aria-controls="collapseExample">
