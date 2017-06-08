@@ -21,7 +21,6 @@ class StockHelpers
 
     const LOWER_BOUND = 28;
     const HIGHER_BOUND = 72;
-    const MIDDLE_BOUND = 50;
 
     public static function getWatchedStocks($isActive)
     {
@@ -160,12 +159,6 @@ class StockHelpers
 	        $data['score'] += 2;
         }
 
-        if ($rsi[0] > self::MIDDLE_BOUND) {
-        	$data['score'] -= 1;
-        } else if ($rsi[0] < self::MIDDLE_BOUND) {
-        	$data['score'] += 1;
-        }
-
         if ($rsi[0] > $rsi[1]) {
 	        $data['score'] += 1;
         } else if ($rsi[0] < $rsi[1]) {
@@ -179,9 +172,9 @@ class StockHelpers
 	    $data = ['label' => 'label-default', 'chart' => '', 'text' => 'HOLD', 'score' => 0];
 
         if ($macd[0] < 0 && $macd[1] >= 0) {
-        	$data['score'] -= 1;
+        	$data['score'] -= 2;
         } else if ($macd[0] > 0 && $macd[1] <= 0) {
-        	$data['score'] += 1;
+        	$data['score'] += 2;
         }
 
         if ($macd[0] > $macd[1]) {

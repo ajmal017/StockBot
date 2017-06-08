@@ -1,10 +1,33 @@
 .progress-indicator {
 	height: 12px;
-	background: linear-gradient(to right, #ff4136, #bbb, #23a127);
+	background: linear-gradient(to right, #ff4136, #777, #23a127);
 	border-radius: 7px;
 	margin-top: 10px;
 	position: relative;
 	border: solid 2px #333;
+}
+
+.progress-indicator::after, .progress-indicator::before, .progress-indicator .middle {
+	content: "";
+	display: block;
+	position: absolute;
+	width: 4px;
+	height: 8px;
+	background: #fff;
+	top: 0;
+	transform: translateX(-50%);
+}
+
+.progress-indicator::after {
+	left: 25%;
+}
+
+.progress-indicator::before {
+	left: 75%;
+}
+
+.progress-indicator .middle {
+	left: 50%;
 }
 
 .progress-indicator .bubble {

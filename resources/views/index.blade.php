@@ -45,7 +45,8 @@
 						</div>
 						<div class="col-sm-4">
 							<div class="progress-indicator">
-								<div class="bubble" style="left:{{ 50 + ($item['overall'] * 50 / 8) }}%;">{{ $item['overall'] }}</div>
+								<div class="middle"></div>
+								<div class="bubble" style="left:{{ 50 + ($item['overall'] * 50 / config('constants.MAX_SCORE')) }}%;">{{ $item['overall'] }}</div>
 							</div>
 						</div>
 						<div class="col-sm-1 text-success">
