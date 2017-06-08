@@ -11,20 +11,25 @@ use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
-    public function index()
-    {
-        $data = [];
-        $data['summary'] = $this->getSummaries();
+	private $data;
 
-        return view('index', ['data' => $data, 'page' => 'home']);
+	public function __construct()
+	{
+		$this->data['lastUpdated'] = WatchedStock::orderBy('importedAt', 'asc')->first()->importedAt;
+	}
+
+	public function index()
+    {
+        $this->data['summary'] = $this->getSummaries();
+
+        return view('index', ['data' => $this->data, 'page' => 'home']);
     }
 
     public function show($stockCode)
     {
-        $data = [];
-        $data['details'] = StockHelpers::getStockDetails($stockCode);
+	    $this->data['details'] = StockHelpers::getStockDetails($stockCode);
 
-        return view('stock', ['data' => $data, 'page' => 'stock']);
+        return view('stock', ['data' => $this->data, 'page' => 'stock']);
     }
 
     public function store(Request $request)
@@ -51,6 +56,10 @@ class StockController extends Controller
             $summary = StockHelpers::getStockSummary($watchedStock['stockCode']);
             $results[$watchedStock['stockCode']] = $summary;
         }
+
+        uasort($results, function($a, $b) {
+        	return $b['overall'] - $a['overall'];
+        });
 
         return $results;
     }

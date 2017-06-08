@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ImportHelpers;
+use App\Helpers\StockHelpers;
 use App\Models\WatchedStock;
 use Carbon\Carbon;
 
 class DataImportController extends Controller
 {
-
 	/*
 	 * stock data will be in this format
 	 * date - open - high - low - close - volume
@@ -17,12 +17,14 @@ class DataImportController extends Controller
 	{
 		$start = microtime(true);
 
-		$watchedStocks = WatchedStock::where('isActive', true)
-			->whereDate('imported_at', '<', Carbon::now()->setTime(0, 0, 0)->toDateTimeString())
-			->get();
+		$watchedStocks = StockHelpers::getUnimportedWatchedStocks();
+		$index = 0;
 
-		foreach ($watchedStocks as $stock) {
-			ImportHelpers::importStockData($stock->stockCode);
+		while (microtime(true) - $start < 29 && $index < count($watchedStocks))
+		{
+			$stock = $watchedStocks[$index];
+			ImportHelpers::importStockData($stock['stockCode']);
+			$index++;
 		}
 
 		$end = microtime(true) - $start;

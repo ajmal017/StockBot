@@ -4,6 +4,7 @@ class RsiChart extends GoogleChart {
         this.google.charts.setOnLoadCallback(() => {
             options = {
                 title: title,
+                width: this.width,
 	            height: this.height,
                 curveType: options.curveType,
                 legend: options.legend,

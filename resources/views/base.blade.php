@@ -13,6 +13,9 @@
         <div class="navbar-header">
             <a class="navbar-brand" href="{{ route('home') }}">StockBot</a>
         </div>
+        <div class="navbar-left">
+            <div class="last-updated">Last updated: <strong>{{ $data['lastUpdated'] }}</strong></div>
+        </div>
         @if ($page == 'home')
         <form action="{{ route('post-stock') }}" method="POST" class="navbar-form navbar-right">
             {{ csrf_field() }}

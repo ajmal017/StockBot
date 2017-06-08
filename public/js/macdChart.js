@@ -4,6 +4,7 @@ class MacdChart extends GoogleChart {
         this.google.charts.setOnLoadCallback(() => {
             options = {
                 title: title,
+	            width: this.width,
 	            height: this.height,
                 legend: options.legend,
                 seriesType: options.seriesType,

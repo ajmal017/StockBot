@@ -11,6 +11,7 @@ namespace App\Helpers;
 
 use App\Models\Stock;
 use App\Models\WatchedStock;
+use Carbon\Carbon;
 
 class StockHelpers
 {
@@ -18,12 +19,24 @@ class StockHelpers
     const DETAIL_COUNT = 50;
     const DEFAULT_DATE_ORDER = 'desc';
 
+    const LOWER_BOUND = 28;
+    const HIGHER_BOUND = 72;
+    const MIDDLE_BOUND = 50;
+
     public static function getWatchedStocks($isActive)
     {
         return WatchedStock::where('isActive', $isActive)
 	        ->orderBy('stockCode', 'asc')
             ->get()
             ->toArray();
+    }
+
+    public static function getUnimportedWatchedStocks()
+    {
+    	return WatchedStock::where('isActive', true)
+		    ->whereDate('importedAt', '<', Carbon::now()->setTime(0, 0, 0)->toDateTimeString())
+		    ->get()
+		    ->toArray();
     }
 
     public static function getStockSummary($stockCode)
@@ -43,7 +56,7 @@ class StockHelpers
             ->get()
             ->toArray();
 
-        return self::dataToResult($stocks, self::DETAIL_COUNT - 1);
+        return self::dataToResult($stocks, self::DETAIL_COUNT);
     }
 
     private static function getStockData($stockCode)
@@ -67,6 +80,7 @@ class StockHelpers
 	    $results['rsi'] = json_encode($results['rsi']);
 	    $results['macd'] = json_encode($results['macd']);
 	    $results['stoch'] = json_encode($results['stoch']);
+	    $results['insight'] = json_encode($results['insight']);
 
 	    return $results;
     }
@@ -110,7 +124,10 @@ class StockHelpers
 
     private static function processInsight($results, $count)
     {
-        $rsi = $results['rsi'][$count][1];
+        $rsi = [
+        	$results['rsi'][$count][1],
+	        $results['rsi'][$count - 1][1]
+		];
 
         $macdHistogram = [
             $results['macd'][$count][3],
@@ -135,29 +152,76 @@ class StockHelpers
     }
 
     private static function getRsiInsight($rsi) {
-        if ($rsi > 70) {
-            return ['label' => 'label-danger', 'chart' => 'danger', 'text' => 'SELL', 'score' => -2];
-        } else if ($rsi < 30) {
-            return ['label' => 'label-success', 'chart' => 'success', 'text' => 'BUY', 'score' => 2];
+	    $data = ['label' => 'label-default', 'chart' => '', 'text' => 'HOLD', 'score' => 0];
+
+        if ($rsi[0] > self::HIGHER_BOUND) {
+        	$data['score'] -= 2;
+        } else if ($rsi[0] < self::LOWER_BOUND) {
+	        $data['score'] += 2;
         }
-        return ['label' => 'label-default', 'chart' => '', 'text' => 'HOLD', 'score' => 0];
+
+        if ($rsi[0] > self::MIDDLE_BOUND) {
+        	$data['score'] -= 1;
+        } else if ($rsi[0] < self::MIDDLE_BOUND) {
+        	$data['score'] += 1;
+        }
+
+        if ($rsi[0] > $rsi[1]) {
+	        $data['score'] += 1;
+        } else if ($rsi[0] < $rsi[1]) {
+	        $data['score'] -= 1;
+        }
+
+	    return self::processData($data);
     }
 
     private static function getMacdInsight($macd) {
+	    $data = ['label' => 'label-default', 'chart' => '', 'text' => 'HOLD', 'score' => 0];
+
         if ($macd[0] < 0 && $macd[1] >= 0) {
-            return ['label' => 'label-danger', 'chart' => 'danger', 'text' => 'SELL', 'score' => -1];
+        	$data['score'] -= 1;
         } else if ($macd[0] > 0 && $macd[1] <= 0) {
-            return ['label' => 'label-success', 'chart' => 'success', 'text' => 'BUY', 'score' => 1];
+        	$data['score'] += 1;
         }
-	    return ['label' => 'label-default', 'chart' => '', 'text' => 'HOLD', 'score' => 0];
+
+        if ($macd[0] > $macd[1]) {
+        	$data['score'] += 1;
+        } else if ($macd[0] < $macd[1]) {
+        	$data['score'] -= 1;
+        }
+
+	    return self::processData($data);
     }
 
     private static function getStochInsight($stoch, $stochHistogram) {
-        if ($stochHistogram[0] < 0 && $stochHistogram[1] >= 0 && $stoch > 70) {
-	        return ['label' => 'label-danger', 'chart' => 'danger', 'text' => 'SELL', 'score' => -1];
-        } else if ($stochHistogram[0] > 0 && $stochHistogram[1] <= 0 && $stoch < 30) {
-	        return ['label' => 'label-success', 'chart' => 'success', 'text' => 'BUY', 'score' => 1];
+	    $data = ['label' => 'label-default', 'chart' => '', 'text' => 'HOLD', 'score' => 0];
+
+        if ($stochHistogram[0] < 0 && $stochHistogram[1] >= 0) {
+	        $data['score'] -= 1;
+        } else if ($stochHistogram[0] > 0 && $stochHistogram[1] <= 0) {
+	        $data['score'] += 1;
         }
-	    return ['label' => 'label-default', 'chart' => '', 'text' => 'HOLD', 'score' => 0];
+
+        if ($stoch < self::LOWER_BOUND) {
+	        $data['score'] += 1;
+        } else if ($stoch > self::HIGHER_BOUND) {
+	        $data['score'] -= 1;
+        }
+
+	    return self::processData($data);
     }
+
+    private static function processData($data) {
+	    if ($data['score'] < 0) {
+		    $data['label'] = 'label-danger';
+		    $data['chart'] = 'danger';
+		    $data['text'] = 'SELL';
+	    } else if ($data['score'] > 0) {
+		    $data['label'] = 'label-success';
+		    $data['chart'] = 'success';
+		    $data['text'] = 'BUY';
+	    }
+
+	    return $data;
+	}
 }

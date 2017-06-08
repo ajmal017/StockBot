@@ -5,6 +5,7 @@ class CandlestickChart extends GoogleChart {
 			let data = this.parse(param);
 			options = {
 				title: title,
+				width: this.width,
 				height: this.height,
 				legend: options.legend,
 				candlestick: options.candlestick,

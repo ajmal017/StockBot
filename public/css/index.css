@@ -9,6 +9,15 @@ body {
     border-width: 1px 1px 4px 1px;
 }
 
+#summary {
+	margin-top: 260px;
+	margin-bottom: 30px;
+}
+
+#detail {
+	margin-bottom: 30px;
+}
+
 #detail .panel {
 	height: auto;
 }
@@ -28,30 +37,43 @@ body {
 
 .panel .chart {
 	margin-top: 10px;
-	max-width: 100%;
 	min-height: 150px;
-	border: solid 2px #cccccc;
+	outline: solid 2px #cccccc;
 	transition: all 1s;
 }
 
 .panel .chart.success {
-	border-color: #28b62c;
+	outline-color: #28b62c;
 }
 
 .panel .chart.danger {
-	border-color: #ff4136;
+	outline-color: #ff4136;
+}
+
+.chart-detail {
+	padding: 5px;
+	margin-top: 0;
+	width: 1140px;
+	position: fixed;
+	z-index: 999;
 }
 
 #detail .panel .chart {
-	min-height: 300px;
+	min-height: 200px;
 }
 
 #detail .panel .row {
-	margin-top: 30px;
+	margin-top: 10px;
 }
 
 #detail .panel .row:first-child {
 	margin-top: 0;
+}
+
+.last-updated {
+	font-size: 18px;
+	padding: 15px;
+	line-height: 20px;
 }
 
 /* google chart */
@@ -60,20 +82,6 @@ svg g g g g rect {
 }
 
 /* override bootstrap */
-.collapse {
-	display: block;
-	height: 0 !important;
-	overflow: hidden;
-}
-
-.collapse.in {
-	height: auto !important;
-}
-
-.collapse.in.chart-detail, .collapsing.chart-detail {
-	padding-top: 20px;
-}
-
 .panel-body {
-	padding: 5px;
+	padding: 8px;
 }

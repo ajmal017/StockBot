@@ -1,6 +1,7 @@
 class GoogleChart {
-    constructor(google, height = 150) {
+    constructor(google, width = 350, height = 150) {
         this.google = google;
+        this.width = width;
         this.height = height;
     }
 }
