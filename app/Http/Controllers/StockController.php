@@ -38,11 +38,15 @@ class StockController extends Controller
 		$data['stockCode'] = strtoupper($data['stockCode']);
 		$data['imported_at'] = Carbon::now();
 
-		DB::transaction(function () use ($data) {
-			WatchedStock::create($data);
+		$stock = WatchedStock::where('stockCode', $data['stockCode'])->first();
 
-			ImportHelpers::importStockData($data['stockCode']);
-		});
+		if (!isset($stock)) {
+			DB::transaction(function () use ($data) {
+				WatchedStock::create($data);
+
+				ImportHelpers::importStockData($data['stockCode']);
+			});
+		}
 
 		return redirect()->back();
     }
