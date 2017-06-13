@@ -15,7 +15,7 @@ class StockController extends Controller
 
 	public function __construct()
 	{
-		$this->data['lastUpdated'] = WatchedStock::orderBy('importedAt', 'asc')->first()->importedAt;
+		$this->data['lastUpdated'] = WatchedStock::orderBy('importedAt', 'asc')->first()->importedAt ?? 'Not updated yet';
 	}
 
 	public function index()
