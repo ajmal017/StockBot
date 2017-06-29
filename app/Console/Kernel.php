@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
     	$schedule->call(function() {
     		$dataImport = new DataImportController();
     		$dataImport->importAllStockData();
-	    })->everyThirtyMinutes();
+	    })->hourly()->between('21:00', '6:00');
     }
 
     /**
