@@ -3,5 +3,6 @@ class GoogleChart {
         this.google = google;
         this.width = width;
         this.height = height;
+	    this.google.charts.load('current', {'packages':['corechart']});
     }
 }

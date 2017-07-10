@@ -1,6 +1,5 @@
 class StochChart extends GoogleChart{
     draw(element, param, title, options) {
-        this.google.charts.load('current', {'packages':['corechart']});
         this.google.charts.setOnLoadCallback(() => {
             options = {
                 title: title,
