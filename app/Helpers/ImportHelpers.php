@@ -12,7 +12,7 @@ use LupeCode\phpTraderInterface\Trader;
 class ImportHelpers
 {
 	const HISTORICAL_PRICE_URL = 'http://www.google.com/finance/historical?q=IDX%3A{stock}&output=csv';
-	const MAX_STOCK_ROWS = 50;
+	const MAX_STOCK_ROWS = 100;
 	const OFFSET_ROWS = 35;
 
 	public static function importStockData($stockCode)

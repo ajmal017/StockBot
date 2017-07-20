@@ -16,7 +16,7 @@ use Carbon\Carbon;
 class StockHelpers
 {
     const SUMMARY_COUNT = 12;
-    const DETAIL_COUNT = 50;
+    const DETAIL_COUNT = 100;
     const DEFAULT_DATE_ORDER = 'desc';
 
     const LOWER_BOUND = 28;
